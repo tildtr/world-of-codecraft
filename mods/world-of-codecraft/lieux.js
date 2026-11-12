@@ -41,14 +41,14 @@ export const BUILDINGS = {
   atelier: { get nom() { return t("building").atelier; }, box: [750, 70, 230, 200] },
   hotel: { get nom() { return t("building").hotel; }, box: [1115, 20, 330, 320] },
   taverne: { get nom() { return t("building").taverne; }, box: [1475, 40, 230, 250] },
-  temple: { get nom() { return t("building").temple; }, box: [1890, 10, 270, 350] },
+  temple: { get nom() { return t("building").temple; }, box: [1900, 155, 260, 195] }, // the smial (Mathom-house) in this fork
   caserne: { get nom() { return t("building").caserne; }, box: [2330, 100, 240, 220] },
 };
 /** The market's name in the current language. */
 export const market = () => t("market");
 
 /** Chimney tops (smoke) and live glows [x, y, size, color, period] (night only unless always). */
-export const SMOKE = [[827, 95], [1590, 47], [1639, 100]];
+export const SMOKE = [[827, 95], [1590, 47], [1639, 100], [2016, 156], [2088, 198]]; // the last two: the smial's chimneys
 export const GLOWS = [
   { at: [1598, 345], size: 120, color: "#ffa12b", period: 700, always: true }, // campfire
   { at: [815, 236], size: 60, color: "#ff8a2b", period: 650 }, // forge hearth
