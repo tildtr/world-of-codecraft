@@ -5,11 +5,11 @@
 const tab = (id, index, name, status, panes = 1, active = false) => ({ id, index, name, named: true, status, panes, active, settled: false });
 
 export const DEMO_SPACES = [
-  { id: "demo-ironhold", index: 1, name: "Ironhold", named: true, machine: null, active: false,
+  { id: "demo-ironhold", index: 1, name: "Erebor", named: true, machine: null, active: false,
     tabs: [tab("demo-t1", 1, "Mend the bridge", "blocked"), tab("demo-t2", 2, "Survey the mines", "working")] },
-  { id: "demo-elderwood", index: 2, name: "Elderwood", named: true, machine: null, active: false,
+  { id: "demo-elderwood", index: 2, name: "Lothlórien", named: true, machine: null, active: false,
     tabs: [tab("demo-t3", 1, "Chart the realm", "done"), tab("demo-t4", 2, "Tame the archives", "idle")] },
-  { id: "demo-valbrume", index: 3, name: "Valbrume", named: true, machine: null, active: true,
+  { id: "demo-valbrume", index: 3, name: "Hobbiton", named: true, machine: null, active: true,
     tabs: [tab("demo-t5", 1, "Forge the realm", "working", 2, true), tab("demo-t6", 2, "Guard the gates", null)] },
 ];
 
@@ -25,13 +25,13 @@ export const DEMO_AGENTS = [
 ];
 
 /** The unit the command panel shows in a demo. */
-export const DEMO_SELECTED = { ...DEMO_AGENTS[4], tab_name: "Forge the realm", space_name: "Valbrume" };
+export const DEMO_SELECTED = { ...DEMO_AGENTS[4], tab_name: "Forge the realm", space_name: "Hobbiton" };
 
 /** The chronicle shown in a demo (English; a demo is for screenshots). */
 const m = (min) => Date.now() - min * 60_000;
 export const DEMO_LOG = [
-  { at: m(1), text: "[Mage Tower] Thrakk, Orc mage (Claude Code) sets out on a quest \"Forge the realm\"", kind: "working", address: null },
-  { at: m(4), text: "[Barracks] Brann, Human warrior (Codex) needs help", kind: "blocked", address: null },
-  { at: m(9), text: "[Barn and fields] Liriel, Elf ranger (OpenCode) has finished the quest \"Chart the realm\"", kind: "done", address: null },
-  { at: m(15), text: "[Campfire] Gromdal, Dwarf artificer (Gemini) rests by the campfire", kind: "idle", address: null },
+  { at: m(1), text: "[Wizard's Tower] Gorbag, Orc wizard (Claude Code) sets out on the road \"Forge the realm\"", kind: "working", address: null },
+  { at: m(4), text: "[Shirriff-house] Odo, Hobbit shirriff (Codex) calls for aid", kind: "blocked", address: null },
+  { at: m(9), text: "[Farmstead and fields] Galathil, Elf ranger (OpenCode) is back with a tale to tell \"Chart the realm\"", kind: "done", address: null },
+  { at: m(15), text: "[Campfire] Borin, Dwarf smith (Gemini) rests by the fire", kind: "idle", address: null },
 ];

@@ -10,7 +10,7 @@ import { t, tbl } from "./i18n.js";
 export const ART = "mods/world-of-codecraft/art";
 export const TITLE = "Cinzel"; // Roman capitals, headings only (fonts/, OFL)
 export const UI = "Alegreya Sans"; // sturdy humanist text, everything else (fonts/, OFL)
-export const VILLAGE = "Valbrume";
+export const VILLAGE = "Hobbiton";
 
 export const C = {
   wood: "#7a4e2a", woodLight: "#a8693a", woodPale: "#c98b52", woodDark: "#4a2e17", woodInk: "#2a1a0e",
