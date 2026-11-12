@@ -15,7 +15,7 @@ export const TEXTE = "Alegreya Sans";
 
 // the interface palette (same ramps as the art: warm lights, violet shadows)
 export const P = {
-  ink: "#120c10", night: "#17111a", enamel: "#231b27", enamelHi: "#2e2433", leather: "#1d1410", well: "#140e0b",
+  ink: "#120c10", night: "#141710", enamel: "#232a1e", enamelHi: "#2c3426", leather: "#1d1410", well: "#140e0b",
   cream: "#f6ead0", parch: "#e9d9b4", muted: "#cdb98f", dim: "#9a8a72", faint: "#6f6252",
   gold: "#f2c25a", goldHi: "#ffe39a", goldLo: "#b47a22", bronze: "#8a6334",
   ink2: "#2e2016", inkSoft: "#5e4630", wax: "#9c2230",
