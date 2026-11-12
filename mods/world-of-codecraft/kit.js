@@ -172,8 +172,10 @@ export function pennant(color, charge, s = 2) {
     .child(svg(`${ART}/blason-${charge}.svg`).absolute().left(Math.round(1.5 * s)).top(2 * s).w(7 * s).h(7 * s).text_color(C.goldLight));
 }
 
-const COLORS = ["#7a1f2b", "#2f4a7a", "#2f6b4a", "#6b3a8a", "#8a5a1f", "#1f6b6b", "#8a2f5a", "#4a5a2f"];
-const CHARGES = ["etoile", "lune", "tour", "cle", "chene", "coupe", "epee", "soleil"];
+// Realm colours (tools/ui.py CLOTH and ui.js CLOTH must match): Erebor red, Rivendell blue, Rohan green,
+// Gondor sable, Lórien gold, Mirkwood, Dale, the Shire.
+const COLORS = ["#7a1f2b", "#2f4a7a", "#2f6b3a", "#4b4d5c", "#8a6a1f", "#1f4a3f", "#6b3a2a", "#556b2a"];
+const CHARGES = ["etoile", "lune", "tour", "cle", "chene", "anneau", "epee", "soleil"];
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
 
 /** A space as a district: its colors, charge and name. */

@@ -131,7 +131,7 @@ export function mark(st) {
   return null;
 }
 
-const CLOTH = ["#7a1f2b", "#2f4a7a", "#2f6b4a", "#6b3a8a", "#8a5a1f", "#1f6b6b", "#8a2f5a", "#4a5a2f"];
+const CLOTH = ["#7a1f2b", "#2f4a7a", "#2f6b3a", "#4b4d5c", "#8a6a1f", "#1f4a3f", "#6b3a2a", "#556b2a"];
 /** A district's banner: cloth in its colour, its charge in gold (26 x 40). */
 export const banner = (d, scale = 1) =>
   pic(`banniere-${Math.max(0, CLOTH.indexOf(d.color))}-${d.charge}`, 26 * scale, 40 * scale);
