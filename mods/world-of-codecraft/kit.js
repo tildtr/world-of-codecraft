@@ -51,12 +51,14 @@ export function folder(cwd) {
 export const RACES = ["elfe", "orque", "humain", "mort-vivant", "nain"];
 // Display names in the current language (the keys stay as the art file names use them).
 export const RACE_FR = tbl("race");
+// Tolkien-style names: Sindarin-sounding Elves, minor orcs and dwarves of the legendarium, Shire
+// hobbits (the "humain" sprites), and original names for the barrow-wights.
 const NAMES = {
-  elfe: ["Aelith", "Sylvarin", "Elowen", "Thalindra", "Faelar", "Liriel", "Ithrandë"],
-  orque: ["Grokka", "Murzag", "Ushna", "Thrakk", "Bolgra", "Zugor", "Krasha"],
-  humain: ["Aldric", "Maëlle", "Gauvain", "Isolde", "Bertrand", "Ysaline", "Tancrède"],
-  "mort-vivant": ["Morvane", "Ossian", "Cendrine", "Lugubre", "Sépulcrin", "Vespérine", "Fanel"],
-  nain: ["Durgan", "Helga", "Ostrik", "Brunna", "Gromdal", "Barbefer", "Kordi"],
+  elfe: ["Elrandir", "Celebwen", "Galathil", "Lindir", "Nimloth", "Aerandir", "Gildor"],
+  orque: ["Gorbag", "Shagrat", "Lugdush", "Radbug", "Muzgash", "Grishnákh", "Ufthak"],
+  humain: ["Odo", "Marigold", "Posco", "Lily", "Folco", "Pervinca", "Tobold"],
+  "mort-vivant": ["Coldhand", "Barrowgrim", "Ashwane", "Morndim", "Fenhaunt", "Greymourn", "Hollowmere"],
+  nain: ["Borin", "Nár", "Frerin", "Grór", "Flói", "Lóni", "Náli"],
 };
 
 export const CLASSES = {
