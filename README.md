@@ -31,6 +31,29 @@ in Valbrume, a village drawn in isometric pixel art, built around one big termin
 - **A warm terminal theme**: dark oak background, parchment text and a gold cursor. The text size is
   yours: the layout leaves it to Herdr's settings.
 
+## About this fork
+
+This branch (`my-customization`) is a personal fork of
+[kevinpardo/world-of-codecraft](https://github.com/kevinpardo/world-of-codecraft) by Kevin Pardo,
+used under its MIT License (see `LICENSE`; the fonts stay under the SIL Open Font License). It adds:
+
+- **A Files / Changes panel on the right** (Herdr's stock `files` and `changes` mods), opened from
+  the top-bar buttons or `ctrl-shift-e` / `ctrl-shift-g`.
+- **A Middle-earth theme**: Hobbiton and the Shire, hobbits and barrow-wights, hobbit mealtimes,
+  realm pennants. It covers text, names and colours only. The pixel art is the original's. This is
+  an unofficial fan customization, not affiliated with the Tolkien Estate or any rights holder.
+
+To install this fork, clone it instead of the original and run `tools/install.sh` as below.
+
+To pull in the original's updates:
+
+```sh
+git fetch upstream && git merge upstream/main
+tools/install.sh
+```
+
+Conflicts are most likely in `mods/world-of-codecraft/i18n.js`, `fronton.js`, `kit.js` and the layout.
+
 ## Install
 
 Ask your agent to add `herdr.dev/layouts/kevinpardo/world-of-codecraft`, or:
