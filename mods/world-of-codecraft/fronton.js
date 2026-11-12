@@ -29,6 +29,17 @@ function setMode(on) {
   run("layout.resize", on ? { id: "arene", px: 400 } : { id: "arene", weight: 1 });
 }
 
+// The Files / Changes panel (panneau, right of the terminal): Herdr's stock mods in a stack.
+// A button opens its view; clicking the one already shown closes the panel. Layout clicks too.
+function panelView() {
+  try { const n = node(layout(), "panneau"); return n && !n.hidden ? node(n, "panneau-corps")?.active ?? null : null; } catch { return null; }
+}
+function togglePanel(view) {
+  if (panelView() === view) return run("layout.hide", { id: "panneau" });
+  run("layout.select", { stack: "panneau-corps", child: view });
+  run("layout.show", { id: "panneau" });
+}
+
 const PW = 136; // plaque width
 
 export default class Fronton {
@@ -42,8 +53,16 @@ export default class Fronton {
     };
     tick(cx);
     cx.timer.every(60_000, tick);
-    // ctrl-shift-i (KEYS.json): "world-of-codecraft.mode"
-    cx.spawn(async (cx) => { for (;;) { if ((await nextCommand()) === "mode") { setMode(!immersive()); cx.notify(); } } });
+    // KEYS.json: ctrl-shift-i "world-of-codecraft.mode", ctrl-shift-e / ctrl-shift-g ".files" / ".changes"
+    cx.spawn(async (cx) => {
+      for (;;) {
+        const c = await nextCommand();
+        if (c === "mode") setMode(!immersive());
+        else if (c === "files" || c === "changes") togglePanel(c);
+        else continue;
+        cx.notify();
+      }
+    });
   }
 
   /** An ornate plaque: icon in its gold socket, the value, a caption. */
@@ -63,6 +82,13 @@ export default class Fronton {
     const five = q.five ? t("five", 100 - q.five.used) : t("account", acc);
     const tip = t("quotaTip", label, acc, rem, left(q.week.resets) || "?", q.five ? 100 - q.five.used : null, q.five?.resets ? left(q.five.resets) : "", q.stale);
     return this.plaque(`res-${acc}`, icon, `${t("pct", rem)}${q.stale ? " ?" : ""}`, five, tip, rem <= 20);
+  }
+
+  /** A Files or Changes button: lit (gold text) while its view is the one shown. */
+  panelButton(view) {
+    const on = panelView() === view;
+    return button(`panneau-${view}`, txt(t(view), 16, on ? P.goldHi : P.cream, 800),
+      () => togglePanel(view), { h: 28, tip: t(`${view}Tip`) });
   }
 
   /** The immersive-mode switch: swaps the village (big) and the terminal (below), in the same layout. */
@@ -138,6 +164,8 @@ export default class Fronton {
         .when(resets.length > 0, (el) => el.child(this.plaque("res-foire", pic("ic-sablier", 22, 28), fair || "—", t("untilFair"), t("fairTip"))))
         .child(div().flex_1().min_w(0).flex().justify_center().when(Boolean(scroll), (el) => el.child(scroll)))
         .when(Boolean(alert), (el) => el.child(alert))
+        .child(this.panelButton("files"))
+        .child(this.panelButton("changes"))
         .child(this.mode())
         .child(hour));
   }
