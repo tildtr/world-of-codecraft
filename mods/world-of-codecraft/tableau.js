@@ -33,7 +33,7 @@ export default class Tableau {
     const s = STATE[st];
     const b = st === "blocked";
     return well(h_flex().flex_none().h(22).pl(3).pr(7).gap(3).items_center().rounded(2),
-      { bg: b ? "#4a1418" : P.night, lit: b ? "#a0303a" : "#3e3040" })
+      { bg: b ? "#4a1418" : P.night, lit: b ? "#a0303a" : "#36402e" })
       .child(gem(st, true))
       .child(txt(`${n} ${s.mot}`, 14, b ? "#ffd8cc" : P.parch, 700));
   }

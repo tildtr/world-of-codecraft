@@ -79,6 +79,15 @@ function route(a, b) {
 /** Walk anim for a step: towards the viewer = walk_dl (mirrored: walk_dr), away = walk_ur (walk_ul). */
 const walkAnim = (dx, dy) => (dy > 0 || (dy === 0 && dx < 0) ? (dx <= 0 ? "walk_dl" : "walk_dr") : (dx >= 0 ? "walk_ur" : "walk_ul"));
 
+// Hobbits: the "human" sprites drawn smaller, a head shorter than the dwarves. Size and feet anchor scale
+// together, so drawing, hit box and depth sorting all follow.
+const SIZE = { human: 0.72 };
+function scaled(key, info) {
+  const k = SIZE[String(key).split("-")[0]];
+  if (!k) return info;
+  return { ...info, w: Math.round(info.w * k), h: Math.round(info.h * k), ax: Math.round(info.ax * k), ay: Math.round(info.ay * k) };
+}
+
 export default class Place {
   init(_p, cx) {
     detectLang(cx);
@@ -204,8 +213,8 @@ export default class Place {
     if (u.leg) name = walkAnim(u.leg.b[0] - u.leg.a[0], u.leg.b[1] - u.leg.a[1]);
     else name = (u.a.status === "working" && this.act.anim(u.a.address)) || (u.a.status === "working" ? "work" : u.a.status === "idle" ? "rest" : "idle");
     const info = H?.anims?.[name];
-    if (info) return { name, info, frames: true };
-    return { name: "stand", info: H?.stand ?? { w: 50, h: 85, ax: 25, ay: 83 }, frames: false };
+    if (info) return { name, info: scaled(u.key, info), frames: true };
+    return { name: "stand", info: scaled(u.key, H?.stand ?? { w: 50, h: 85, ax: 25, ay: 83 }), frames: false };
   }
 
   unit(u, selected, night, t, animate) {

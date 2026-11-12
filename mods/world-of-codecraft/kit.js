@@ -14,7 +14,7 @@ export const VILLAGE = "Hobbiton";
 
 export const C = {
   wood: "#7a4e2a", woodLight: "#a8693a", woodPale: "#c98b52", woodDark: "#4a2e17", woodInk: "#2a1a0e",
-  iron: "#3b3542", ironLight: "#6b6574", rivet: "#9a93a3",
+  iron: "#3e3f30", ironLight: "#6a6a52", rivet: "#a3a08a",
   parch: "#efe2bf", parchDark: "#d9c697", ink: "#2e2016", inkSoft: "#6a5034",
   gold: "#e8c35a", goldLight: "#ffe9a0", quest: "#ffd23f", wax: "#a3242e",
   slate: "#16171c", stone: "#8d8a93", cobble: "#5d5866", cobbleLight: "#77717f", cobbleDark: "#45414d",

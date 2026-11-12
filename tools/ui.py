@@ -79,17 +79,17 @@ def mat(name, *a, **k):
 
 mat('wood', '#6b3f26', tex='grain', hs=24, bias=-0.6, amp=0.7)
 mat('wooddk', '#4f2e1e', tex='grain', hs=24, bias=-0.4, amp=0.6)
-mat('iron', '#58546a', tex='iron', spec=2.2, hs=16, bias=-0.3)
-mat('irondk', '#3f3c4c', tex='iron', spec=1.0, hs=14)
+mat('iron', '#5a5a44', tex='iron', spec=2.2, hs=16, bias=-0.3)
+mat('irondk', '#3e3f30', tex='iron', spec=1.0, hs=14)
 mat('gold', '#e0a32a', tex='gold', spec=2.2, hs=30, light=1.30)
 mat('leather', '#4a2c22', tex='leather', hs=20, bias=-0.2, amp=0.25)
 mat('parch', '#e8d6b0', tex='parch', hs=16)
 mat('lacquer', '#8e2a2a', tex='iron', spec=1.4, hs=26)
-mat('steel', '#4c4a62', tex='iron', spec=2.0, hs=16)
-mat('enamel', '#2b2230', flat=True)
+mat('steel', '#4c5040', tex='iron', spec=2.0, hs=16)
+mat('enamel', '#232a1e', flat=True)
 mat('vellum', '#e9dcbc', flat=True)
 mat('bone', '#efe2c0', spec=1.2, hs=18)
-mat('void', '#241c2c', tex='none', hs=10)
+mat('void', '#1f2419', tex='none', hs=10)
 GEM = {'working': '#3fcf5a', 'blocked': '#e8343a', 'done': '#f2b62a', 'idle': '#a9a1c4', 'sapphire': '#3f72e0', 'amethyst': '#9a55e8'}
 for k, v in GEM.items(): mat('gem-' + k, v, spec=3.0, hs=26, light=1.38, dark=0.22)
 CLOTH = ["#7a1f2b", "#2f4a7a", "#2f6b3a", "#4b4d5c", "#8a6a1f", "#1f4a3f", "#6b3a2a", "#556b2a"]  # kit.js COLORS
