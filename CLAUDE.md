@@ -62,3 +62,23 @@ reloads can exhaust the mod's JS heap ("out of memory"/"Null"); restart the Herd
   building "front cut-outs" are redrawn above units behind them.
 - Only the visible village block runs timers/writes the chronicle; hidden blocks must keep none.
 - The theme's terminal font size is intentionally unset (left to Herdr settings).
+
+## This fork's customizations (branch `my-customization`)
+
+- **Right panel:** `bourg` has a third child, `panneau` (hidden column) holding the stack `panneau-corps` with
+  Herdr's stock `files` and `changes` mods. `fronton.js` (`panelView`/`togglePanel`) opens it from the top-bar
+  buttons and the commands `world-of-codecraft.files` / `.changes` (`KEYS.json`: ctrl-shift-e / ctrl-shift-g).
+  A stack `"header": "tabs"` is rejected by this Herdr version despite AGENTS.md; don't add it back.
+- **Middle-earth theme:** display text only, in `i18n.js` (EN + FR), the `NAMES` lists in `kit.js`, the title in
+  `fronton.js` and `demo.js`. Art keys stay French/original: race `humain` is shown as Hobbit, `mort-vivant`
+  as Barrow-wight; buildings `tour`/`atelier`/`caserne`/`temple`/`taverne`/`hotel`/`grange` are Wizard's Tower,
+  Smithy, Shirriff-house, Mathom-house, The Green Dragon, Mayor's Hall, Farmstead. Keep new strings about as
+  short as the originals: the hour plaque fits ~63 px of Alegreya Sans Bold 16 before it hits the clock.
+- **Realm pennants are baked PNGs** (`art/ui/banniere-<cloth index>-<charge>.png`), not the `blason-*.svg`
+  files. `ui.js` maps a colour to its PNG by index in `CLOTH`, so `CLOTH` in `tools/ui.py`, `CLOTH` in `ui.js`
+  and `COLORS` in `kit.js` must stay identical; an unknown colour falls back to index 0, a missing charge draws
+  nothing. Re-bake with `python3 tools/ui.py banners` (numpy, scipy, Pillow). It writes to `<repo>/art/ui/`,
+  so move the PNGs into `mods/world-of-codecraft/art/ui/` afterwards. An unchanged re-bake is pixel-identical.
+- **Checking all states and French without waiting for them:** temporarily add `"demo": true` and
+  `"lang": "fr"` to the props of the `fronton`, `tableau`, `commande` and `place` blocks, install, run
+  `herdr-app shot`, then restore the layout and reinstall. Never commit the demo props.
