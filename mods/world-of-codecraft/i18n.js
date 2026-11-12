@@ -137,7 +137,7 @@ const S = {
       idle: { mot: "Au coin du feu", fr: "se repose au coin du feu" },
     },
     board: { blocked: "aide", done: "récit", working: "en route", idle: "repos" },
-    hours: ["Nuit", "Petit-déj.", "Onze-heures", "Déjeuner", "Thé", "Dîner", "Souper"],
+    hours: ["Nuit", "Petit-déj.", "Collation", "Déjeuner", "Thé", "Dîner", "Souper"],
     days: "j",
     home: "Logis",
     district: (n, name) => `Royaume ${n} · ${name}`,
