@@ -92,7 +92,7 @@ mat('bone', '#efe2c0', spec=1.2, hs=18)
 mat('void', '#241c2c', tex='none', hs=10)
 GEM = {'working': '#3fcf5a', 'blocked': '#e8343a', 'done': '#f2b62a', 'idle': '#a9a1c4', 'sapphire': '#3f72e0', 'amethyst': '#9a55e8'}
 for k, v in GEM.items(): mat('gem-' + k, v, spec=3.0, hs=26, light=1.38, dark=0.22)
-CLOTH = ["#7a1f2b", "#2f4a7a", "#2f6b4a", "#6b3a8a", "#8a5a1f", "#1f6b6b", "#8a2f5a", "#4a5a2f"]  # kit.js COLORS
+CLOTH = ["#7a1f2b", "#2f4a7a", "#2f6b3a", "#4b4d5c", "#8a6a1f", "#1f4a3f", "#6b3a2a", "#556b2a"]  # kit.js COLORS
 for i, c in enumerate(CLOTH): mat(f'cloth{i}', c, tex='cloth', hs=26, light=1.4, bias=0.25)
 
 
@@ -666,6 +666,7 @@ CHARGES = {
     'chene': lambda d, k: (d.ellipse([0.5 * k, 0.5 * k, 10.5 * k, 7.5 * k], fill=255), d.rectangle([4.5 * k, 6 * k, 6.5 * k, 11 * k], fill=255)),
     'coupe': lambda d, k: (d.pieslice([1 * k, -4 * k, 10 * k, 6.5 * k], 0, 180, fill=255), d.rectangle([4.7 * k, 6 * k, 6.3 * k, 9 * k], fill=255), d.rectangle([2.5 * k, 9 * k, 8.5 * k, 10.8 * k], fill=255)),
     'epee': lambda d, k: (d.rectangle([4.6 * k, 0, 6.4 * k, 8 * k], fill=255), d.rectangle([1.5 * k, 7 * k, 9.5 * k, 8.6 * k], fill=255), d.rectangle([4.6 * k, 8.6 * k, 6.4 * k, 11 * k], fill=255)),
+    'anneau': lambda d, k: (d.ellipse([0.8 * k, 0.8 * k, 10.2 * k, 10.2 * k], fill=255), d.ellipse([3.0 * k, 3.0 * k, 8.0 * k, 8.0 * k], fill=0)),
     'soleil': lambda d, k: ([d.line([(5.5 * k, 5.5 * k), (5.5 * k + np.cos(a) * 5.5 * k, 5.5 * k + np.sin(a) * 5.5 * k)], fill=255, width=int(1.4 * k)) for a in np.arange(8) * np.pi / 4], d.ellipse([2.3 * k, 2.3 * k, 8.7 * k, 8.7 * k], fill=255)),
 }
 

@@ -10,7 +10,7 @@
 import { div } from "gpui-kit";
 import { h_flex, v_flex } from "gpui-base";
 import { spaces, agents, run, props, layout, nextCommand, window as appWindow } from "herdr";
-import { VILLAGE, district, clip, heroOf, heroTitle, hourName, hhmm, isNight, readQuotas, left } from "./kit.js";
+import { district, clip, heroOf, heroTitle, hourName, hhmm, isNight, readQuotas, left } from "./kit.js";
 import { P, DECO, TEXTE, bar, pic, txt, button, mark, banner } from "./ui.js";
 import { DEMO_SPACES } from "./demo.js";
 import { t, detectLang } from "./i18n.js";
@@ -156,8 +156,8 @@ export default class Fronton {
           .child(pic("cartouche", 284, 42).absolute().left(0).top(0))
           .child(div().absolute().left(10).top(3).child(pic("blason", 30, 36)))
           .child(v_flex().absolute().left(46).top(0).bottom(0).justify_center()
-            .child(div().font_family(DECO).font_weight(700).text_size(17).line_height(1.1).text_color(P.goldHi).child("World of Codecraft"))
-            .child(txt(t("villageOf", VILLAGE), 13, P.muted, 700).line_height(1.1))))
+            .child(div().font_family(DECO).font_weight(700).text_size(15).line_height(1.1).text_color(P.goldHi).child("Fellowship of the Code"))
+            .child(txt(t("villageOf", t("village")), 13, P.muted, 700).line_height(1.1))))
         .when(Boolean(gold), (el) => el.child(gold))
         .when(Boolean(wood), (el) => el.child(wood))
         .child(this.plaque("res-heros", pic("ic-heros", 26, 22), `${busy} / ${all.length}`, t("heroesAtWork"), t("heroesTip", busy, all.length)))
