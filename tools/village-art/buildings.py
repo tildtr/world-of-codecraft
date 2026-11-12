@@ -521,6 +521,61 @@ def fx(): return fence('x')
 @bld('fence-y')
 def fy(): return fence('y')
 
+# ------------------------------------------------------------------ the Shire (this fork)
+def disc_y(v, cx, cz, r, y0, y1, mat, rin=None):
+    """A disc standing in a wall plane y (facing +y), centre (cx, cz): round doors and windows."""
+    def f(X, Y, Z):
+        d = (X - cx) ** 2 + (Z - cz) ** 2
+        m = (d <= r * r) & (Y >= y0) & (Y < y1) & (Z >= 0)
+        if rin: m &= d > rin * rin
+        return m
+    v.put((cx - r, cx + r, y0, y1, max(0, cz - r), cz + r), f, mat)
+
+def round_window(v, x, z, face, r=6.5):
+    disc_y(v, x, z, r, face - 1, face + 1.4, TIMBER)
+    disc_y(v, x, z, r - 1.5, face - 2, face + 1.6, GLASS)
+    v.box(x - 0.4, x + 0.4, face + 1.4, face + 2, z - 5, z + 5, TIMBER)
+    v.box(x - r + 1.5, x + r - 1.5, face + 1.4, face + 2, z - 0.4, z + 0.4, TIMBER)
+    for k, c in enumerate((CLOTH_R, CLOTH_Y, CLOTH_R, CLOTH_Y)):   # a window box of flowers
+        v.ell(x - 4.5 + k * 3, face + 4, z - 6.4, 1.5, 1.5, 1.5, c)
+    v.box(x - 6.5, x + 6.5, face + 1.5, face + 5, z - 9.5, z - 7, PLANK)
+
+@bld('smial')
+def smial():
+    """A grand hobbit smial (the Mathom-house): a long turf hill cut flat in front, a stone face with the round
+    green door and four round windows, two chimneys, a path and a garden fence."""
+    v = Vol(-70, 70, -60, 52, 0, 90)
+    FACE = 6
+    v.ell(0, -6, -10, 66, 54, 62, MOSS)        # the turf
+    v.ell(0, -6, -10, 64.5, 52.5, 60.5, LEAF_D)  # a darker rim where it is cut
+    v.ell(0, -6, -10, 62, 50, 58, STONE)       # the stone under it: shows on the cut face
+    v.box(-70, 70, FACE, 52, 0, 90, 0)         # cut the front flat
+    disc_y(v, 0, 16, 20, FACE - 1, FACE + 1.5, STONE_D)
+    disc_y(v, 0, 16, 16, FACE - 2, FACE + 2, DOOR_G)
+    for a in (-10, -5, 0, 5, 10):
+        v.box(a - 0.3, a + 0.3, FACE + 1.6, FACE + 2.2, 1, 31, TIMBER)
+    v.ell(0, FACE + 3, 16, 2, 2, 2, GOLD)      # the brass knob, in the middle
+    v.box(-5, 5, FACE - 1, FACE + 2.5, 36, 40, MARBLE)  # keystone
+    for x in (-46, -26, 26, 46):
+        round_window(v, x, 22 if abs(x) < 30 else 17, FACE, r=7.5 if abs(x) < 30 else 6.5)
+    v.box(-15.5, -14.5, FACE + 12, FACE + 13, 0, 16, TIMBER)   # the sign
+    v.box(-22, -8, FACE + 12.6, FACE + 13.6, 9, 17, WOOD_L); v.box(-20, -10, FACE + 13.6, FACE + 14, 11, 15, GOLD)
+    chimney(v, 28, -14, 30, 70, BRICK, 7)
+    chimney(v, -34, -24, 24, 62, BRICK, 6)
+    v.ell(-12, -30, 46, 10, 9, 8, LEAF); v.ell(-2, -36, 44, 7, 7, 6, LEAF_F); v.ell(44, -20, 30, 8, 7, 6, LEAF)
+    for k in range(5):
+        v.box(-6 + (k % 2) * 2, 6 + (k % 2) * 2, FACE + 5 + k * 6.5, FACE + 10 + k * 6.5, 0, 0.8, STONE)
+    rng = np.random.default_rng(5)
+    for x in np.arange(-58, 60, 4.2):
+        if abs(x) < 23: continue
+        v.ell(x + rng.uniform(-1, 1), FACE + 2.8, 1.3, 1.5, 1.5, 1.7, [CLOTH_R, CLOTH_Y, CLOTH_W, LEAF, CLOTH_P][int(rng.integers(5))])
+    for x in range(-64, 65, 10):
+        if abs(x) < 11: continue
+        v.box(x - 0.8, x + 0.8, FACE + 34, FACE + 35.6, 0, 8, TIMBER)
+    for zz in (3, 6):
+        v.box(-64, -11, FACE + 34.3, FACE + 35.3, zz, zz + 1.2, WOOD_L); v.box(11, 64, FACE + 34.3, FACE + 35.3, zz, zz + 1.2, WOOD_L)
+    return v
+
 def build(name):
     t = time.time()
     s = {'magetower': 1.3}.get(name, S_B)
