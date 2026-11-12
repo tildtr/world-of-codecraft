@@ -12,6 +12,8 @@
         "id": "gauche"
       }
     },
-    "ctrl-shift-i": "world-of-codecraft.mode"
+    "ctrl-shift-i": "world-of-codecraft.mode",
+    "ctrl-shift-e": "world-of-codecraft.files",
+    "ctrl-shift-g": "world-of-codecraft.changes"
   }
 }
