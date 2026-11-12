@@ -229,7 +229,6 @@
               "id": "panneau-corps",
               "type": "stack",
               "active": "files",
-              "header": "tabs",
               "children": [
                 {
                   "id": "files",
