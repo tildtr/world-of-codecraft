@@ -30,8 +30,8 @@ export const DEMO_SELECTED = { ...DEMO_AGENTS[4], tab_name: "Forge the realm", s
 /** The chronicle shown in a demo (English; a demo is for screenshots). */
 const m = (min) => Date.now() - min * 60_000;
 export const DEMO_LOG = [
-  { at: m(1), text: "[Wizard's Tower] Gorbag, Orc wizard (Claude Code) sets out on the road \"Forge the realm\"", kind: "working", address: null },
-  { at: m(4), text: "[Shirriff-house] Odo, Hobbit shirriff (Codex) calls for aid", kind: "blocked", address: null },
+  { at: m(1), text: "[Elf-tower] Gorbag, Orc wizard (Claude Code) sets out on the road \"Forge the realm\"", kind: "working", address: null },
+  { at: m(4), text: "[Longhall] Odo, Hobbit shirriff (Codex) calls for aid", kind: "blocked", address: null },
   { at: m(9), text: "[Farmstead and fields] Galathil, Elf ranger (OpenCode) is back with a tale to tell \"Chart the realm\"", kind: "done", address: null },
   { at: m(15), text: "[Campfire] Borin, Dwarf smith (Gemini) rests by the fire", kind: "idle", address: null },
 ];

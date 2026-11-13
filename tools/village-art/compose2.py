@@ -153,13 +153,13 @@ def scene():
         placed.append((u, v))
         b(['tree-pine', 'tree-pine', 'tree-oak', 'tree-pine', 'tree-autumn'][k % 5], u, v, 6)
     b('barn', 180, 230)
-    b('magetower', 560, 348, 30)
-    b('forge', 860, 215)
-    b('townhall', 1280, 290, 60)
+    b('elftower', 560, 348, 30)  # this fork: the Elf-tower stands where the wizard's tower stood
+    b('dwarfforge', 860, 215)  # this fork: the Dwarf-forge
+    b('elfhouse', 1280, 290, 60)  # this fork: the Elvish house
     b('tavern', 1610, 245)
     b('smial', 2030, 292, 45)  # this fork: the Mathom-house smial stands where the temple stood
     b('tree-oak', 2110, 205, 8)  # an old oak on the hill behind it
-    b('barracks', 2470, 262)
+    b('longhall', 2470, 262)  # this fork: the Rohan longhall
     b('well', 1470, 390, 10); b('noticeboard', 1060, 380, 6); b('campfire', 1598, 352, 4)
     b('stall-red', 1730, 395, 10); b('stall-blue', 1860, 390, 10); b('stall-green', 960, 400, 10)
     for (t, u, v) in (('tree-oak', 2960, 395), ('tree-oak', 2900, 260), ('tree-autumn', 760, 398), ('bush', 2250, 380), ('bush', 2600, 395),
