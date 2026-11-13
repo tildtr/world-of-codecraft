@@ -38,7 +38,7 @@ export function detectLang(cx) {
 const S = {
   en: {
     village: "Hobbiton",
-    villageOf: (v) => `village of ${v}`,
+    subtitle: "Middle-earth", // the top-bar subtitle in this fork (was "village of …")
     pct: (n) => `${n}%`,
     // races and classes
     race: { elfe: "Elf", orque: "Orc", humain: "Hobbit", "mort-vivant": "Barrow-wight", nain: "Dwarf" },
@@ -128,7 +128,7 @@ const S = {
   },
   fr: {
     village: "Hobbitebourg",
-    villageOf: (v) => `village de ${v}`,
+    subtitle: "Terre du Milieu",
     pct: (n) => `${n} %`,
     race: { elfe: "elfe", orque: "orque", humain: "hobbit", "mort-vivant": "des Galgals", nain: "nain" },
     cls: { mage: "magicien", artificier: "forgeron", guerrier: "shiriff", pretre: "maître du savoir", rodeur: "rôdeur", voleur: "cambrioleur" },

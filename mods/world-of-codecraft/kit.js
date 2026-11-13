@@ -175,7 +175,7 @@ export function pennant(color, charge, s = 2) {
 // Realm colours (tools/ui.py CLOTH and ui.js CLOTH must match): Erebor red, Rivendell blue, Rohan green,
 // Gondor sable, Lórien gold, Mirkwood, Dale, the Shire.
 const COLORS = ["#7a1f2b", "#2f4a7a", "#2f6b3a", "#4b4d5c", "#8a6a1f", "#1f4a3f", "#6b3a2a", "#556b2a"];
-const CHARGES = ["etoile", "lune", "tour", "cle", "chene", "anneau", "epee", "soleil"];
+const CHARGES = ["etoile", "arbre", "cheval", "enclume", "couronne", "feuille", "epee", "tour"]; // tools/ui.py CHARGES (Middle-earth in this fork)
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
 
 /** A space as a district: its colors, charge and name. */
