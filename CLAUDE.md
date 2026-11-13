@@ -79,6 +79,11 @@ reloads can exhaust the mod's JS heap ("out of memory"/"Null"); restart the Herd
   and `COLORS` in `kit.js` must stay identical; an unknown colour falls back to index 0, a missing charge draws
   nothing. Re-bake with `python3 tools/ui.py banners` (numpy, scipy, Pillow). It writes to `<repo>/art/ui/`,
   so move the PNGs into `mods/world-of-codecraft/art/ui/` afterwards. An unchanged re-bake is pixel-identical.
+  PNG bytes can differ even when pixels don't, so compare pixels before copying a re-bake over the shipped art.
+- **Heraldry:** the top-left `blason` is the Ring, and the realm charges are Middle-earth ones (`etoile` = Star of
+  Elendil, `arbre` = White Tree, `cheval` = Rohan, `enclume` = Durin, `couronne`, `feuille` = Lórien, `epee`,
+  `tour`). `CHARGES` in `tools/ui.py` and in `kit.js` must list the same names. The `blason-*.svg` files belong
+  to the unused `pennant()` and were left as they are.
 - **Checking all states and French without waiting for them:** temporarily add `"demo": true` and
   `"lang": "fr"` to the props of the `fronton`, `tableau`, `commande` and `place` blocks, install, run
   `herdr-app shot`, then restore the layout and reinstall. Never commit the demo props.

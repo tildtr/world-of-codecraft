@@ -643,31 +643,43 @@ def icons():
     moon = disc(cv, 10, 10, 8) & ~disc(cv, 13.5, 7.5, 7)
     cv.put(moon, 3 + dome(cv, 10, 10, 8, 0.5), 'bone')
     save(render(cv, cast=0), 'ic-lune')
-    # crest: heater shield, sapphire field, gold border, crossed quill and sword, 30 x 36
+    # crest (this fork): the Ring alone, a plain gold band seen slightly from above, with a warm glow, 30 x 36
     cv = Cv(30, 36)
-    sh = sup(lambda d, k: d.polygon([(1 * k, 1 * k), (29 * k, 1 * k), (29 * k, 18 * k), (24 * k, 28 * k), (15 * k, 35 * k), (6 * k, 28 * k), (1 * k, 18 * k)], fill=255), 30, 36)
-    dd = ndimage.distance_transform_edt(sh)
-    cv.put(sh, 3 + np.clip(dd, 0, 6) * 0.25, 'gold')
-    field = sh & (dd > 2.6)
-    cv.put(field, 2.4 + np.clip(dd, 0, 8) * 0.12, 'gem-sapphire'); cv.T[field] = -1.2
-    sword = sup(lambda d, k: (d.line([(8 * k, 7 * k), (22 * k, 27 * k)], fill=255, width=int(2.4 * k)), d.line([(7 * k, 21 * k), (15 * k, 15 * k)], fill=255, width=int(2 * k))), 30, 36)
-    quill = sup(lambda d, k: (d.polygon([(22 * k, 6 * k), (25 * k, 8 * k), (12 * k, 25 * k), (9 * k, 27 * k), (10 * k, 24 * k)], fill=255)), 30, 36)
-    cv.put(quill & field, 4.0, 'bone'); cv.put(sword & field, 4.6, 'gold')
-    cv.put(disc(cv, 15, 31, 1.5) & sh, 5, 'gem-blocked')
-    save(render(cv), 'blason')
+    cx, cy = 15, 18
+    e = ((cv.xx + 0.5 - cx) / 12) ** 2 + ((cv.yy + 0.5 - cy) / 10) ** 2
+    ei = ((cv.xx + 0.5 - cx) / 9) ** 2 + ((cv.yy + 0.5 - cy) / 7) ** 2
+    band = (e <= 1) & (ei > 1)
+    cv.put(band, 4 + np.clip(ndimage.distance_transform_edt(band), 0, 2) * 1.4, 'gold')
+    col = render(cv)
+    lit = col[..., 3] > 0
+    for it, al in ((1, 150), (2, 80), (3, 35)):
+        halo = ndimage.binary_dilation(lit, iterations=it) & (col[..., 3] == 0)
+        col[halo, :3] = (255, 140, 40); col[halo, 3] = al
+    save(col, 'blason')
 
 
 # ------------------------------------------------------------------ district banners
+# This fork: Middle-earth charges (kit.js CHARGES must list the same names).
 CHARGES = {
-    'etoile': lambda d, k: d.polygon([(5.5 * k + np.cos(a) * r * k, 5.5 * k + np.sin(a) * r * k) for i, a in enumerate(np.arange(10) * np.pi / 5 - np.pi / 2) for r in [5.4 if i % 2 == 0 else 2.3]], fill=255),
-    'lune': lambda d, k: (d.ellipse([0.5 * k, 0.5 * k, 10.5 * k, 10.5 * k], fill=255), d.ellipse([3.5 * k, -0.5 * k, 12.5 * k, 8.5 * k], fill=0)),
-    'tour': lambda d, k: (d.rectangle([2.5 * k, 3 * k, 8.5 * k, 11 * k], fill=255), d.rectangle([1.5 * k, 0.5 * k, 3.5 * k, 3 * k], fill=255), d.rectangle([4.5 * k, 0.5 * k, 6.5 * k, 3 * k], fill=255), d.rectangle([7.5 * k, 0.5 * k, 9.5 * k, 3 * k], fill=255), d.rectangle([4.5 * k, 7 * k, 6.5 * k, 11 * k], fill=0)),
-    'cle': lambda d, k: (d.ellipse([0.5 * k, 0.5 * k, 6 * k, 6 * k], fill=255), d.ellipse([2.2 * k, 2.2 * k, 4.3 * k, 4.3 * k], fill=0), d.line([(4.5 * k, 4.5 * k), (10.5 * k, 10.5 * k)], fill=255, width=int(1.8 * k)), d.line([(8 * k, 8 * k), (6.5 * k, 9.8 * k)], fill=255, width=int(1.6 * k))),
-    'chene': lambda d, k: (d.ellipse([0.5 * k, 0.5 * k, 10.5 * k, 7.5 * k], fill=255), d.rectangle([4.5 * k, 6 * k, 6.5 * k, 11 * k], fill=255)),
-    'coupe': lambda d, k: (d.pieslice([1 * k, -4 * k, 10 * k, 6.5 * k], 0, 180, fill=255), d.rectangle([4.7 * k, 6 * k, 6.3 * k, 9 * k], fill=255), d.rectangle([2.5 * k, 9 * k, 8.5 * k, 10.8 * k], fill=255)),
+    # the Star of Elendil: four long rays and four short
+    'etoile': lambda d, k: d.polygon([(5.5 * k + np.cos(a) * r * k, 5.5 * k + np.sin(a) * r * k) for i, a in enumerate(np.arange(16) * np.pi / 8 - np.pi / 2) for r in [(5.7 if i % 4 == 0 else 3.6) if i % 2 == 0 else 1.3]], fill=255),
+    # the White Tree of Gondor
+    'arbre': lambda d, k: (d.rectangle([4.8 * k, 5 * k, 6.2 * k, 10.6 * k], fill=255), d.rectangle([3 * k, 10 * k, 8 * k, 11 * k], fill=255),
+                           d.line([(5.5 * k, 6 * k), (1 * k, 2.5 * k)], fill=255, width=int(1.2 * k)), d.line([(5.5 * k, 6 * k), (10 * k, 2.5 * k)], fill=255, width=int(1.2 * k)),
+                           d.line([(5.5 * k, 7.5 * k), (1.5 * k, 5.5 * k)], fill=255, width=int(1.1 * k)), d.line([(5.5 * k, 7.5 * k), (9.5 * k, 5.5 * k)], fill=255, width=int(1.1 * k)),
+                           d.line([(5.5 * k, 6 * k), (5.5 * k, 0.5 * k)], fill=255, width=int(1.2 * k)),
+                           [d.ellipse([(x - 0.9) * k, (y - 0.9) * k, (x + 0.9) * k, (y + 0.9) * k], fill=255) for x, y in ((1, 2.3), (10, 2.3), (5.5, 0.9), (3.2, 1.2), (7.8, 1.2))]),
+    # a horse's head, for Rohan
+    'cheval': lambda d, k: d.polygon([(3 * k, 11 * k), (3.5 * k, 6 * k), (5 * k, 2.5 * k), (5.3 * k, 0.3 * k), (6.5 * k, 2 * k), (7.5 * k, 1 * k), (7.6 * k, 2.8 * k), (10.5 * k, 6.8 * k), (10 * k, 8.2 * k), (8.5 * k, 8 * k), (7 * k, 6.5 * k), (7.5 * k, 11 * k)], fill=255),
+    # Durin's anvil and hammer
+    'enclume': lambda d, k: (d.polygon([(0.5 * k, 5.5 * k), (10.5 * k, 5.5 * k), (10.5 * k, 7 * k), (8 * k, 7 * k), (7.5 * k, 8.5 * k), (9 * k, 10.8 * k), (2 * k, 10.8 * k), (3.5 * k, 8.5 * k), (3 * k, 7 * k), (1.5 * k, 7 * k)], fill=255),
+                             d.rectangle([3.5 * k, 0.3 * k, 8.5 * k, 2.4 * k], fill=255), d.line([(6 * k, 2 * k), (6 * k, 4.6 * k)], fill=255, width=int(1.2 * k))),
+    'couronne': lambda d, k: d.polygon([(0.5 * k, 3 * k), (3 * k, 6 * k), (5.5 * k, 1 * k), (8 * k, 6 * k), (10.5 * k, 3 * k), (9.5 * k, 10 * k), (1.5 * k, 10 * k)], fill=255),
+    # a mallorn leaf, for Lórien
+    'feuille': lambda d, k: (d.polygon([(5.5 * k, 0.3 * k), (9 * k, 4 * k), (8.5 * k, 7.5 * k), (5.5 * k, 9.5 * k), (2.5 * k, 7.5 * k), (2 * k, 4 * k)], fill=255),
+                             d.line([(5.5 * k, 2 * k), (5.5 * k, 11 * k)], fill=0, width=int(0.8 * k)), d.line([(5.5 * k, 9 * k), (5.5 * k, 11 * k)], fill=255, width=int(1 * k))),
     'epee': lambda d, k: (d.rectangle([4.6 * k, 0, 6.4 * k, 8 * k], fill=255), d.rectangle([1.5 * k, 7 * k, 9.5 * k, 8.6 * k], fill=255), d.rectangle([4.6 * k, 8.6 * k, 6.4 * k, 11 * k], fill=255)),
-    'anneau': lambda d, k: (d.ellipse([0.8 * k, 0.8 * k, 10.2 * k, 10.2 * k], fill=255), d.ellipse([3.0 * k, 3.0 * k, 8.0 * k, 8.0 * k], fill=0)),
-    'soleil': lambda d, k: ([d.line([(5.5 * k, 5.5 * k), (5.5 * k + np.cos(a) * 5.5 * k, 5.5 * k + np.sin(a) * 5.5 * k)], fill=255, width=int(1.4 * k)) for a in np.arange(8) * np.pi / 4], d.ellipse([2.3 * k, 2.3 * k, 8.7 * k, 8.7 * k], fill=255)),
+    'tour': lambda d, k: (d.rectangle([2.5 * k, 3 * k, 8.5 * k, 11 * k], fill=255), d.rectangle([1.5 * k, 0.5 * k, 3.5 * k, 3 * k], fill=255), d.rectangle([4.5 * k, 0.5 * k, 6.5 * k, 3 * k], fill=255), d.rectangle([7.5 * k, 0.5 * k, 9.5 * k, 3 * k], fill=255), d.rectangle([4.5 * k, 7 * k, 6.5 * k, 11 * k], fill=0)),
 }
 
 
