@@ -643,13 +643,13 @@ def icons():
     moon = disc(cv, 10, 10, 8) & ~disc(cv, 13.5, 7.5, 7)
     cv.put(moon, 3 + dome(cv, 10, 10, 8, 0.5), 'bone')
     save(render(cv, cast=0), 'ic-lune')
-    # crest (this fork): the Ring alone, a plain gold band seen slightly from above, with a warm glow, 30 x 36
+    # crest (this fork): the Ring alone, a round gold band with a rounded profile and a warm glow, 30 x 36
     cv = Cv(30, 36)
-    cx, cy = 15, 18
-    e = ((cv.xx + 0.5 - cx) / 12) ** 2 + ((cv.yy + 0.5 - cy) / 10) ** 2
-    ei = ((cv.xx + 0.5 - cx) / 9) ** 2 + ((cv.yy + 0.5 - cy) / 7) ** 2
-    band = (e <= 1) & (ei > 1)
-    cv.put(band, 4 + np.clip(ndimage.distance_transform_edt(band), 0, 2) * 1.4, 'gold')
+    cx, cy, ro, ri = 15, 18, 11.5, 7.0
+    r = np.sqrt((cv.xx + 0.5 - cx) ** 2 + (cv.yy + 0.5 - cy) ** 2)
+    band = (r <= ro) & (r > ri)
+    mid, half = (ro + ri) / 2, (ro - ri) / 2
+    cv.put(band, 3 + np.sqrt(np.clip(1 - ((r - mid) / half) ** 2, 0, 1)) * half * 1.2, 'gold')
     col = render(cv)
     lit = col[..., 3] > 0
     for it, al in ((1, 150), (2, 80), (3, 35)):
