@@ -157,7 +157,8 @@ def scene():
     b('forge', 860, 215)
     b('townhall', 1280, 290, 60)
     b('tavern', 1610, 245)
-    b('temple', 2030, 292, 45)
+    b('smial', 2030, 292, 45)  # this fork: the Mathom-house smial stands where the temple stood
+    b('tree-oak', 2110, 205, 8)  # an old oak on the hill behind it
     b('barracks', 2470, 262)
     b('well', 1470, 390, 10); b('noticeboard', 1060, 380, 6); b('campfire', 1598, 352, 4)
     b('stall-red', 1730, 395, 10); b('stall-blue', 1860, 390, 10); b('stall-green', 960, 400, 10)

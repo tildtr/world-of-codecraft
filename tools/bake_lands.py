@@ -153,7 +153,7 @@ def save2(arr, path):
 # The village band differs from the approved bake only where the new forest's soft ground shadows reach its
 # top grass (and the last row's edge). Its buildings must not change by a single pixel: checked against every
 # building sprite's own pixels; then the village tiles are rewritten from the composite, so no seam shows.
-BUILDINGS = {"b-barn", "b-magetower", "b-forge", "b-townhall", "b-tavern", "b-temple", "b-barracks", "b-well",
+BUILDINGS = {"b-barn", "b-magetower", "b-forge", "b-townhall", "b-tavern", "b-temple", "b-smial", "b-barracks", "b-well",
              "b-noticeboard", "b-campfire", "b-stall-red", "b-stall-blue", "b-stall-green"}
 for tag, img in (("jour", day), ("nuit", night)):
     band = img[N:N + H0]
