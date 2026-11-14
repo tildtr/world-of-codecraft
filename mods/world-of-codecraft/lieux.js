@@ -37,20 +37,20 @@ export const ROAD = [
 /** Building hit boxes [x, y, w, h] and names (in the current language). */
 export const BUILDINGS = {
   grange: { get nom() { return t("building").grange; }, box: [70, 75, 220, 200] },
-  tour: { get nom() { return t("building").tour; }, box: [505, 15, 110, 350] },
-  atelier: { get nom() { return t("building").atelier; }, box: [750, 70, 230, 200] },
-  hotel: { get nom() { return t("building").hotel; }, box: [1115, 20, 330, 320] },
+  tour: { get nom() { return t("building").tour; }, box: [505, 21, 110, 344] }, // the Elf-tower in this fork
+  atelier: { get nom() { return t("building").atelier; }, box: [745, 62, 236, 210] }, // the Dwarf-forge in this fork
+  hotel: { get nom() { return t("building").hotel; }, box: [1095, 28, 338, 320] }, // the Elvish house in this fork
   taverne: { get nom() { return t("building").taverne; }, box: [1475, 40, 230, 250] },
   temple: { get nom() { return t("building").temple; }, box: [1900, 155, 260, 195] }, // the smial (Mathom-house) in this fork
-  caserne: { get nom() { return t("building").caserne; }, box: [2330, 100, 240, 220] },
+  caserne: { get nom() { return t("building").caserne; }, box: [2322, 95, 266, 225] }, // the Rohan longhall in this fork
 };
 /** The market's name in the current language. */
 export const market = () => t("market");
 
 /** Chimney tops (smoke) and live glows [x, y, size, color, period] (night only unless always). */
-export const SMOKE = [[827, 95], [1590, 47], [1639, 100], [2016, 156], [2088, 198]]; // the last two: the smial's chimneys
+export const SMOKE = [[872, 68], [1590, 47], [1639, 100], [2016, 156], [2088, 198]]; // the first: the Dwarf-forge chimney; the last two: the smial's chimneys
 export const GLOWS = [
   { at: [1598, 345], size: 120, color: "#ffa12b", period: 700, always: true }, // campfire
-  { at: [815, 236], size: 60, color: "#ff8a2b", period: 650 }, // forge hearth
-  { at: [558, 160], size: 70, color: "#a86bff", period: 2200 }, // tower windows
+  { at: [852, 214], size: 70, color: "#ff8a2b", period: 650 }, // forge hearth (the Dwarf-forge gate in this fork)
+  { at: [560, 160], size: 70, color: "#9cc6f2", period: 2200 }, // tower windows (the Elf-tower's pale light in this fork)
 ];

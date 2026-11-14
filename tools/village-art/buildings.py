@@ -576,6 +576,323 @@ def smial():
         v.box(-64, -11, FACE + 34.3, FACE + 35.3, zz, zz + 1.2, WOOD_L); v.box(11, 64, FACE + 34.3, FACE + 35.3, zz, zz + 1.2, WOOD_L)
     return v
 
+# ---- this fork: Middle-earth buildings (Elf-tower, Dwarf-forge, Rohan longhall, Elvish house)
+
+
+def lancet(v, ang, z, h, hw, R, glow=ELF_GLOW, frame=METAL):
+    """A tall pointed (lancet) window cut into a round wall at angle ang."""
+    def m(X, Y, Z, d0, d1, ext=0):
+        an = np.arctan2(Y, X); dr = np.hypot(X, Y)
+        da = np.abs(((an - ang + np.pi) % (2 * np.pi)) - np.pi) * R
+        top = z + h + (hw + ext - da) * 1.8
+        return (da <= hw + ext) & (Z >= z - ext) & (Z < top) & (dr >= d0) & (dr <= d1)
+    bb = (-R - 6, R + 6, -R - 6, R + 6, z - 3, z + h + hw * 2 + 4)
+    v.put(bb, lambda X, Y, Z: m(X, Y, Z, R - 1.2, R + 1.4, 1.2), frame)
+    v.put(bb, lambda X, Y, Z: m(X, Y, Z, R - 3, R + 2), 0)
+    v.put(bb, lambda X, Y, Z: m(X, Y, Z, R - 4, R - 2.2), glow)
+
+@bld('elftower')
+def elftower():
+    """A white Elf-tower like those on the Tower Hills: a slender shaft, an open lantern with a seeing-stone, a silver spire."""
+    v = Vol(-46, 46, -46, 46, 0, 232)
+    v.cyl(0, 0, 27, 0, 3, STONE)
+    v.cyl(0, 0, 23, 3, 7, MARBLE)
+    r = lambda z: 17 - (z - 7) * 0.022
+    v.put((-18, 18, -18, 18, 7, 168), lambda X, Y, Z: X ** 2 + Y ** 2 <= r(Z) ** 2, MARBLE)
+    for zz in (56, 108):
+        v.cyl(0, 0, r(zz) + 1.3, zz, zz + 2, METAL)
+    # a leaf-carved string course under the lantern
+    v.put((-22, 22, -22, 22, 156, 168), lambda X, Y, Z: X ** 2 + Y ** 2 <= (r(156) + (Z - 156) * 0.45) ** 2, MARBLE)
+    for ang, z in ((0.25, 28), (1.35, 28), (0.8, 70), (0.3, 120), (1.3, 120)):
+        lancet(v, ang, z, 12, 2.8, r(z))
+    # the open lantern: a floor, eight slender columns, the seeing-stone glowing inside
+    v.cyl(0, 0, 21, 168, 171, MARBLE)
+    for k in range(8):
+        a = k / 8 * 2 * np.pi + 0.2
+        v.cyl(17 * np.cos(a), 17 * np.sin(a), 1.6, 171, 191, MARBLE)
+    v.cyl(0, 0, 4, 171, 177, METAL)
+    v.ell(0, 0, 181, 5.5, 5.5, 5.5, ELF_GLOW)
+    v.cyl(0, 0, 20.5, 191, 193.5, METAL)
+    # a tall, slightly concave silver spire with a star on its needle
+    v.put((-22, 22, -22, 22, 193.5, 227), lambda X, Y, Z: X ** 2 + Y ** 2 <= (0.8 + 19 * (1 - np.clip((Z - 193.5) / 33.5, 0, 1)) ** 2.4) ** 2, ELF_ROOF)
+    v.cyl(0, 0, 0.8, 224, 232, METAL)
+    for dx, dy, dz in ((0, 0, 3), (3, 0, 0), (-3, 0, 0), (0, 3, 0), (0, -3, 0)):
+        v.ell(dx * 0.6, dy * 0.6, 229 + dz * 0.5, 1.4 if (dx or dy) else 1.6, 1.4, 1.4, ELF_GLOW)
+    # a pointed white door with a silver frame
+    a = 0.8; R0 = r(10)
+    def door(X, Y, Z, d0, d1, ext=0):
+        an = np.arctan2(Y, X); dr = np.hypot(X, Y)
+        da = np.abs(((an - a + np.pi) % (2 * np.pi)) - np.pi) * R0
+        return (da <= 6 + ext) & (Z >= 7) & (Z < 24 + (6 + ext - da) * 1.6) & (dr >= d0) & (dr <= d1)
+    bb = (-26, 26, -26, 26, 7, 40)
+    v.put(bb, lambda X, Y, Z: door(X, Y, Z, R0 - 1, R0 + 1.6, 1.4), METAL)
+    v.put(bb, lambda X, Y, Z: door(X, Y, Z, R0 - 3, R0 + 2), 0)
+    v.put(bb, lambda X, Y, Z: door(X, Y, Z, R0 - 3.6, R0 - 2.4), WOOD_L)
+    # ivy and white flowers climbing the foot, on the visible side
+    rng = np.random.default_rng(7)
+    for an0 in (0.05, 0.4, 1.25, 1.6):
+        an = an0; top = rng.uniform(40, 70)
+        for zz in np.arange(7, top, 2.2):
+            an += rng.uniform(-0.05, 0.05)
+            rr = r(zz) + 0.8
+            v.ell(rr * np.cos(an), rr * np.sin(an), zz, 1.6, 1.6, 1.4, LEAF_D if rng.random() < 0.7 else LEAF)
+            if rng.random() < 0.18: v.ell((rr + 1.2) * np.cos(an + 0.06), (rr + 1.2) * np.sin(an + 0.06), zz, 0.9, 0.9, 0.9, CLOTH_W)
+    return v
+
+@bld('dwarfforge')
+def dwarfforge():
+    """A Dwarvish forge: a stone gate carved into a crag, the forge glowing in its mouth, a mine cart on rails."""
+    v = Vol(-56, 60, -50, 58, 0, 150)
+    FACE = 22
+    # the crag: a few rough lumps, cut flat where the gate is carved
+    def crag(X, Y, Z):
+        # a lumpy, faceted crag: an ellipsoid whose radius wobbles with direction, with ledges
+        dx, dy, dz = (X + 6) / 52, (Y + 14) / 40, Z / 84
+        rr = np.sqrt(dx * dx + dy * dy + dz * dz)
+        th = np.arctan2(dy, dx); ph = np.arctan2(dz, np.hypot(dx, dy))
+        wob = 1 + 0.10 * np.sin(th * 5 + 1.3) * np.cos(ph * 3) + 0.06 * np.sin(th * 11 + ph * 7) + 0.05 * np.round(np.sin(ph * 9) * 2) / 2
+        return rr <= wob
+    v.put((-56, 56, -50, 52, 0, 100), crag, ROCK)
+    v.put((24, 56, -40, 6, 0, 60), lambda X, Y, Z: ((X - 34) / 22) ** 2 + ((Y + 18) / 22) ** 2 + (Z / 52) ** 2 <= 1 + 0.12 * np.sin(np.arctan2(Y + 18, X - 34) * 6), ROCK)
+    for (bx, by) in ((-44, 20), (-38, 28), (48, 18)):
+        v.ell(bx, by, 2, 5, 4, 4, ROCK)
+    v.box(-56, 56, FACE, 52, 0, 150, 0)
+    # the carved facade: a tall sunken panel, two great pillars with capitals, a heavy stepped lintel
+    v.box(-28, 42, FACE - 4, FACE, 0, 70, 0)
+    v.box(-28, 42, FACE - 6, FACE - 4, 0, 70, STONE_D)
+    for px in (-26, 31):
+        v.box(px, px + 9, FACE - 4, FACE + 4, 0, 56, STONE)
+        for zz in range(8, 56, 12):
+            v.box(px - 0.4, px + 9.4, FACE + 3.6, FACE + 4.4, zz, zz + 1, STONE_D)
+        v.box(px - 2, px + 11, FACE - 4, FACE + 5.5, 56, 61, STONE)
+    v.box(-30, 44, FACE - 4, FACE + 5.5, 61, 70, STONE)
+    v.box(-22, 36, FACE - 4, FACE + 5.5, 70, 75, STONE)
+    for k in range(9):                                          # an angular rune band on the lintel
+        xx = -25 + k * 7.5
+        v.box(xx, xx + 2, FACE + 5.5, FACE + 6.2, 63, 68, GOLD)
+        v.box(xx + 2, xx + 4.5, FACE + 5.5, FACE + 6.2, 66 - (k % 2) * 3, 68 - (k % 2) * 3, GOLD)
+    # the doorway: tall and squared, with stepped shoulders, the forge fire deep inside
+    def gate(X, Y, Z, w):
+        return (np.abs(X - 7) <= w) & (Z < 44 + np.clip(w - np.abs(X - 7), 0, 7) * 1.3)
+    v.put((-12, 26, FACE - 34, FACE + 2, 0, 58), lambda X, Y, Z: gate(X, Y, Z, 15), 0)
+    v.put((-12, 26, FACE - 34, FACE - 26, 0, 58), lambda X, Y, Z: gate(X, Y, Z, 15), COAL)
+    v.put((-8, 22, FACE - 28, FACE - 18, 0, 34), lambda X, Y, Z: (np.abs(X - 7) <= 12) & (Z < 20 + np.sqrt(np.clip(110 - (X - 7) ** 2, 0, None))), FIRE)
+    v.box(-6, 20, FACE - 18, FACE - 10, 0, 6, BRICK); v.box(0, 14, FACE - 16, FACE - 12, 6, 9, FIRE)
+    v.box(-8, 22, FACE - 10, FACE + 1, 0, 0.6, FIRE)          # firelight spilling over the floor
+    # three broad steps up to the gate
+    for k in range(3):
+        v.box(-14 - k * 2, 28 + k * 2, FACE + k * 4, FACE + 4 + k * 4, 0, 4.5 - k * 1.5, STONE)
+    # two dwarf statues on plinths, leaning on their axes
+    def statue(x):
+        y = FACE + 9
+        v.box(x - 6, x + 6, y - 6, y + 6, 0, 7, STONE_D)                              # plinth
+        v.box(x - 7, x + 7, y - 7, y + 7, 6, 8, STONE_D)
+        v.put((x - 7, x + 7, y - 7, y + 7, 8, 30), lambda X, Y, Z: ((X - x) ** 2 + (Y - y) ** 2) <= (5.8 - (Z - 8) * 0.06) ** 2, STONE)   # stout body
+        v.ell(x, y, 32, 5.6, 5.6, 3.5, STONE)                                       # shoulders
+        v.ell(x, y, 37, 3.6, 3.6, 3.8, STONE)                                       # head
+        v.cone(x, y, 4.2, 38, 46, STONE_D, p=1.0, r1=0.3)                            # pointed helm
+        v.put((x - 5, x + 6, y, y + 7, 18, 37), lambda X, Y, Z: ((Y - y) > 2.5) & (np.abs(X - x) <= 1 + (Z - 18) * 0.16) & ((Y - y) < 3 + 3.6 - (37 - Z) * 0.05), STONE)  # long forked beard
+        v.box(x + 6, x + 7.6, y + 4, y + 5.6, 8, 44, METAL)                         # axe haft, upright
+        v.put((x + 5, x + 13, y + 3.6, y + 6, 36, 46), lambda X, Y, Z: (X > x + 7) & ((X - x - 7) <= 5 - np.abs(Z - 41) * 0.7), METAL)  # axe blade
+    statue(-40); statue(50)
+    # braziers by the steps
+    for bx in (-20, 34):
+        v.cyl(bx, FACE + 16, 1.2, 0, 10, METAL); v.cyl(bx, FACE + 16, 3.2, 10, 13, METAL)
+        v.ell(bx, FACE + 16, 14, 2.6, 2.6, 3, FIRE)
+    # chimney cut up through the crag, smoke where the old one was
+    chimney(v, 7, -2, 70, 104, STONE, 9)
+    v.box(4, 10, -5, 1, 101, 103, FIRE)
+    # anvil and quench trough on a flagstone yard
+    v.box(-30, 50, FACE + 12, FACE + 30, 0, 1, STONE)
+    ax_, ay_ = 40, FACE + 22
+    v.box(ax_, ax_ + 4, ay_, ay_ + 4, 1, 8, ROCK)
+    v.box(ax_ - 2, ax_ + 7, ay_ - 0.5, ay_ + 4.5, 8, 12, METAL)
+    v.box(ax_ + 7, ax_ + 10, ay_ + 1, ay_ + 3, 9.5, 11.5, METAL)
+    v.box(-34, -20, FACE + 20, FACE + 26, 1, 7, STONE_D); v.box(-33, -21, FACE + 21, FACE + 25, 5, 6.5, WATER)
+    # a mine cart of ore on rails, out of a small side adit
+    v.put((36, 56, -12, 10, 0, 24), lambda X, Y, Z: (np.abs(Y + 1) <= 8) & (Z < 14 + np.sqrt(np.clip(64 - (Y + 1) ** 2, 0, None))), 0)
+    for ry in (-5, 3):
+        v.box(30, 56, ry, ry + 1.2, 0, 1.6, METAL)
+    for rx in range(31, 56, 5):
+        v.box(rx, rx + 2, -7, 6, 0, 0.8, TIMBER)
+    v.box(40, 52, -5, 4, 3, 10, PLANK); v.box(40, 52, -5.5, 4.5, 9, 10.5, METAL)
+    for wx in (42, 50):
+        for wy in (-6, 4):
+            v.ell(wx, wy, 2.6, 2.2, 1.0, 2.2, METAL)
+    for k in range(6):
+        v.ell(42 + (k % 3) * 4, -2 + (k // 3) * 4, 11, 2.2, 2.2, 1.8, COAL if k % 2 else GOLD)
+    return v
+
+@bld('longhall')
+def longhall():
+    """A Rohan longhall: a timber hall on a stone terrace, a steep thatched roof, crossed horse-head gables, green banners."""
+    v = Vol(-74, 74, -52, 56, 0, 190)
+    x0, x1, y0, y1 = -64, 38, -24, 24
+    # stone terrace with steps up to the gable door
+    v.box(x0 - 8, x1 + 12, y0 - 8, y1 + 8, 0, 8, STONE)
+    v.box(x0 - 9, x1 + 13, y0 - 9, y1 + 9, 7, 9, STONE_D)
+    for k in range(3):
+        v.box(x1 + 13 + k * 4, x1 + 17 + k * 4, -14 + k * 2, 14 - k * 2, 0, 8 - (k + 1) * 2.6, STONE)
+    # timber walls: dark planks with posts
+    v.box(x0, x1, y0, y1, 9, 40, PLANK)
+    for a in np.arange(x0, x1 + 1, 11.5):
+        v.box(a - 1.5, a + 1.5, y1 - 0.5, y1 + 2, 9, 42, TIMBER); v.box(a - 1.5, a + 1.5, y0 - 2, y0 + 0.5, 9, 42, TIMBER)
+    for a in np.arange(y0, y1 + 1, 12):
+        v.box(x1 - 0.5, x1 + 2, a - 1.5, a + 1.5, 9, 42, TIMBER)
+    v.box(x0, x1, y1, y1 + 1.5, 38, 41, TIMBER)
+    # small high windows along the side
+    for a in np.arange(x0 + 6, x1 - 6, 11.5):
+        window(v, 'y', y1, a, a + 4, 26, 34, cross=False, sill=False)
+    # the great thatched roof, ridge along the hall, low eaves
+    v.roof(x0 - 6, x1 + 6, y0 - 8, y1 + 8, 40, 92, THATCH, axis='x', th=5, fill=PLANK, curve=1.0)
+    RW = (y1 - y0) / 2 + 8
+    def shell(X, Y, Z):
+        h = 40 + 52 * np.clip(1 - np.abs(Y) / RW, 0, 1)
+        return (X >= x0 - 6) & (X < x1 + 6) & (np.abs(Y) < RW) & (Z >= 40) & (Z <= h) & (Z > h - 5)
+    v.put((x0 - 6, x1 + 6, -RW, RW, 40, 93), lambda X, Y, Z: shell(X, Y, Z) & (((Z - 40) % 11) < 1.6), THATCH_D)
+    rng = np.random.default_rng(11)
+    for _ in range(5):                                            # a few ragged patches of moss
+        mx, my = rng.uniform(x0, x1), rng.uniform(6, RW - 6) * rng.choice([-1, 1])
+        for _ in range(7):
+            px, py = mx + rng.uniform(-6, 6), my + rng.uniform(-3, 3); pz = 40 + 52 * (1 - abs(py) / RW)
+            r = rng.uniform(1.5, 3.0)
+            v.put((px - 4, px + 4, py - 4, py + 4, pz - 4, pz + 4), lambda X, Y, Z, px=px, py=py, pz=pz, r=r: shell(X, Y, Z) & ((X - px) ** 2 + (Y - py) ** 2 + (Z - pz) ** 2 <= r * r), MOSS_R)
+    v.box(x0 - 6, x1 + 6, -2.5, 2.5, 88, 94, TIMBER)
+    for a in np.arange(x0 - 4, x1 + 6, 9):
+        v.box(a, a + 2, -3.5, 3.5, 90, 95.5, TIMBER)
+    for zz in (60, 80):                                           # thatch ties
+        hw = (y1 + 12 - (y0 - 12)) / 2; d = 1 - (zz - 34) / 62
+        v.box(x0 - 6, x1 + 6, -hw * d - 0.6, -hw * d + 0.6, zz, zz + 1.5, ROPE) if False else None
+    # the gable end: carved board, gold sun disc, crossed barge-boards ending in horse heads
+    gx = x1 + 6
+    hw = (y1 - y0) / 2 + 8
+    def barge(sign):
+        for t in np.arange(0, 1.1, 0.012):
+            yy = sign * hw * (1 - t); zz = 40 + 52 * t
+            v.box(gx - 1, gx + 2.5, yy - 1.6, yy + 1.6, zz - 1.4, zz + 1.4, TIMBER)
+        # the carved horse head, past the crossing, looking outward
+        HEAD = ["...X.X.......",
+                "...XXXX......",
+                "..XXXXXX.....",
+                "..XXXXXXXX...",
+                ".XXXXXXXXXXX.",
+                ".XXXX..XXXXXX",
+                "XXXX.....XXX.",
+                "XXX..........",
+                "XXX..........",
+                "XXX.........."]
+        t = 1.06; by = sign * hw * (1 - t); bz = 40 + 52 * t
+        for r, row in enumerate(HEAD):
+            for c, ch in enumerate(row):
+                if ch != 'X': continue
+                yy = by + sign * (c - 1) * 1.7; zz = bz + (len(HEAD) - r) * 1.7
+                v.box(gx - 1.4, gx + 3.0, yy - 0.9, yy + 0.9, zz - 0.9, zz + 0.9, GOLD)
+    barge(1); barge(-1)
+    v.put((gx - 0.5, gx + 1.8, -8, 8, 56, 74), lambda X, Y, Z: (Y ** 2 + (Z - 64) ** 2 <= 30) & (Y ** 2 + (Z - 64) ** 2 > 7), GOLD)
+    # a porch with carved posts before the gable door
+    door(v, 'x', x1, -7, 7, 30, arch=False, leaf=PLANK_R if False else PLANK)
+    for py in (-12, 12):
+        v.box(x1 + 9, x1 + 12.5, py - 1.75, py + 1.75, 9, 44, TIMBER)
+        for zz in (16, 26, 36):
+            v.box(x1 + 8.6, x1 + 12.9, py - 2.1, py + 2.1, zz, zz + 1.4, GOLD)
+    v.roof(x1, x1 + 15, -17, 17, 42, 54, THATCH, axis='x', th=3)
+    # green and white banners on the long wall
+    for a in (-50, -16, 16):
+        banner(v, 'y', y1 + 2, a, 40, 24, 8, CLOTH_G, CLOTH_W, CLOTH_W)
+    # hitching rail and a hay pile, a water trough
+    hx, hy = -56, y1 + 5
+    v.box(hx, hx + 30, hy, hy + 1.6, 19, 21, TIMBER)
+    for px in (hx, hx + 14, hx + 28):
+        v.box(px, px + 2, hy - 0.2, hy + 1.8, 9, 21, TIMBER)
+    v.box(-6, 10, y1 + 18, y1 + 24, 0, 6, PLANK); v.box(-5, 9, y1 + 19, y1 + 23, 4, 5.5, WATER)
+    v.cone(28, y1 + 20, 7, 0, 16, HAY, p=0.6)
+    flag(v, x0 - 2, y0 + 4, 40, 70, CLOTH_G, 18)
+    return v
+
+def arcade(v, y, xa, xb, z0, z1, step=12, depth=11):
+    """A gallery of slender columns under pointed arches, set into the y-facing wall."""
+    v.box(xa, xb, y - depth, y + 0.5, z0, z1, 0)
+    v.box(xa, xb, y - depth - 1, y - depth, z0, z1, ELF_STONE)
+    for x in np.arange(xa, xb + 0.1, step):
+        v.box(x - 0.9, x + 0.9, y - 2, y, z0, z1, MARBLE)
+        v.box(x - 1.6, x + 1.6, y - 2.6, y + 0.4, z1 - 3, z1 - 1, GOLD)
+    for x in np.arange(xa, xb - step + 0.1, step):
+        cx = x + step / 2
+        v.put((x, x + step, y - 2.6, y, z1 - step, z1), lambda X, Y, Z, cx=cx: (Z > z1 - step * 0.9 + (step / 2 - np.abs(X - cx)) * 1.5), MARBLE)
+    v.box(xa - 1.5, xb + 1.5, y - 3, y + 1, z1, z1 + 3, MARBLE)
+
+@bld('elfhouse')
+def elfhouse():
+    """An Elvish house in the manner of Rivendell: pale stone, pointed arcades, a slim tower, sage roofs, autumn trees."""
+    v = Vol(-80, 80, -66, 70, 0, 210)
+    # terraces
+    v.box(-64, 62, -46, 46, 0, 6, ELF_STONE)
+    v.box(-65, 63, -47, 47, 5, 7, MARBLE)
+    for k in range(3):
+        v.box(-16 - k * 3, 16 + k * 3, 46 + k * 4, 50 + k * 4, 0, 6 - (k + 1) * 2, MARBLE)
+    # the main hall, with an arcade along the front
+    x0, x1, y0, y1 = -54, 26, -30, 30
+    v.box(x0, x1, y0, y1, 7, 50, ELF_STONE)
+    arcade(v, y1, x0 + 4, x1 - 4, 7, 40)
+    v.box(x0 - 2, x1 + 2, y0 - 2, y1 + 2, 50, 53, MARBLE); v.box(x0 - 2.4, x1 + 2.4, y0 - 2.4, y1 + 2.4, 46, 47.2, GOLD)
+    v.roof(x0 - 8, x1 + 8, y0 - 8, y1 + 8, 52, 92, ELF_SLATE, axis='x', hip=0.7, th=4, fill=ELF_STONE, curve=1.6)
+    def crest(axis, a0, a1, c, ztop):
+        mid, half = (a0 + a1) / 2, (a1 - a0) / 2
+        def f(X, Y, Z):
+            A, B = (X, Y) if axis == 'x' else (Y, X)
+            t = np.clip(np.abs(A - mid) / half, 0, 1)
+            return (A >= a0) & (A <= a1) & (np.abs(B - c) <= 0.9) & (Z >= ztop - 1) & (Z <= ztop + 1.5 + 12 * t ** 4)
+        bb = (a0, a1, c - 1, c + 1, ztop - 1, ztop + 14) if axis == 'x' else (c - 1, c + 1, a0, a1, ztop - 1, ztop + 14)
+        v.put(bb, f, GOLD)
+    crest('x', -36, 8, 0, 91)
+    for xx in ():
+        v.put((xx - 3, xx + 3, -3, 3, 88, 102), lambda X, Y, Z, xx=xx: ((X - xx) / 2.4) ** 2 + (Y / 1.2) ** 2 <= (np.sin(np.clip((Z - 88) / 14, 0, 1) * np.pi)) ** 2, GOLD)
+    # the east wing: taller, with a balcony and tall windows
+    wx0, wx1, wy0, wy1 = 26, 56, -22, 22
+    v.box(wx0, wx1, wy0, wy1, 7, 74, ELF_STONE)
+    v.box(wx0 - 1, wx1 + 1, wy0 - 1, wy1 + 1, 74, 77, MARBLE); v.box(wx0 - 1.4, wx1 + 1.4, wy0 - 1.4, wy1 + 1.4, 70, 71.2, GOLD)
+    for a in (-14, -3, 8):
+        window(v, 'x', wx1, a, a + 6, 14, 34, frame=GOLD, arch=True, cross=False, sill=False)
+        window(v, 'x', wx1, a, a + 6, 46, 64, frame=GOLD, arch=True, cross=False, sill=False)
+    v.box(wx1, wx1 + 8, wy0 + 2, wy1 - 2, 40, 42, MARBLE)            # balcony
+    for a in np.arange(wy0 + 3, wy1 - 2, 3):
+        v.box(wx1 + 6.5, wx1 + 8, a, a + 1, 42, 47, MARBLE)
+    v.box(wx1 + 6.5, wx1 + 8, wy0 + 2, wy1 - 2, 47, 48.5, MARBLE)
+    window(v, 'y', wy1, wx0 + 8, wx0 + 16, 46, 64, frame=GOLD, arch=True, cross=False, sill=False)
+    v.roof(wx0 - 6, wx1 + 6, wy0 - 6, wy1 + 6, 76, 118, ELF_SLATE, axis='y', hip=0.8, th=4, fill=ELF_STONE, curve=1.7)
+    crest('y', -8, 8, (wx0 + wx1) / 2, 117)
+    # a slim round tower behind, echoing the Elf-tower
+    tx, ty = -38, -22
+    v.cyl(tx, ty, 10, 7, 108, ELF_STONE)
+    v.cyl(tx, ty, 11.5, 106, 110, MARBLE)
+    for zz in (62, 88):
+        window(v, 'y', ty + 10, tx - 2, tx + 2, zz, zz + 10, frame=GOLD, arch=True, cross=False, sill=False)
+    v.put((tx - 14, tx + 14, ty - 14, ty + 14, 110, 152), lambda X, Y, Z: (X - tx) ** 2 + (Y - ty) ** 2 <= (0.6 + 13 * (1 - np.clip((Z - 110) / 42, 0, 1)) ** 2.2) ** 2, ELF_SLATE)
+    v.cyl(tx, ty, 0.7, 148, 156, GOLD)
+    # a pool with a little fall of water from the terrace
+    v.put((-64, 46, 58, 68, 0, 2), lambda X, Y, Z: np.abs(Y - 63 - 2 * np.sin(X * 0.08)) <= 4 * np.clip(np.minimum(X + 64, 46 - X) / 14, 0.25, 1), WATER)
+    v.put((-64, 46, 56, 70, 0, 2.5), lambda X, Y, Z: (np.abs(np.abs(Y - 63 - 2 * np.sin(X * 0.08)) - 1 - 4 * np.clip(np.minimum(X + 64, 46 - X) / 14, 0.25, 1)) <= 1) & (Z < 2.5), MARBLE)
+    def bridge(X, Y, Z):
+        arch = 2.5 + 6 * np.sqrt(np.clip(1 - ((Y - 63) / 9) ** 2, 0, 1))
+        return (np.abs(X) <= 7) & (Z <= arch) & (Z > arch - 2.2)
+    v.put((-8, 8, 52, 74, 0, 10), bridge, MARBLE)
+    v.put((-8, 8, 52, 74, 0, 14), lambda X, Y, Z: (np.abs(np.abs(X) - 6.5) <= 0.6) & (Z > 2.5 + 6 * np.sqrt(np.clip(1 - ((Y - 63) / 9) ** 2, 0, 1))) & (Z < 4.5 + 6 * np.sqrt(np.clip(1 - ((Y - 63) / 9) ** 2, 0, 1))), GOLD)
+    # slender silver-barked trees in golden autumn leaf
+    rng = np.random.default_rng(3)
+    for (tx2, ty2, s) in ((-72, 26, 1.0), (62, 40, 0.85), (-70, -44, 1.1)):
+        v.cyl(tx2, ty2, 1.2 * s, 0, 62 * s, MARBLE)
+        for k in range(14):
+            ox, oy, oz = rng.uniform(-7, 7) * s, rng.uniform(-7, 7) * s, rng.uniform(34, 72) * s
+            r = rng.uniform(2.6, 4.6) * s
+            v.ell(tx2 + ox, ty2 + oy, oz, r, r, r * 0.9, HAY if k % 2 else LEAF_A)
+    # slim lamp posts with soft white light by the steps
+    for lx in (-22, 22):
+        v.cyl(lx, 50, 0.8, 0, 20, METAL)
+        v.ell(lx, 50, 21.5, 2, 2, 2.4, HOLY)
+        v.cone(lx, 50, 2.6, 23, 27, METAL, p=1.0, r1=0.2)
+    return v
+
+
 def build(name):
     t = time.time()
     s = {'magetower': 1.3}.get(name, S_B)

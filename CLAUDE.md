@@ -71,8 +71,13 @@ reloads can exhaust the mod's JS heap ("out of memory"/"Null"); restart the Herd
   A stack `"header": "tabs"` is rejected by this Herdr version despite AGENTS.md; don't add it back.
 - **Middle-earth theme:** display text only, in `i18n.js` (EN + FR), the `NAMES` lists in `kit.js`, the title in
   `fronton.js` and `demo.js`. Art keys stay French/original: race `humain` is shown as Hobbit, `mort-vivant`
-  as Barrow-wight; buildings `tour`/`atelier`/`caserne`/`temple`/`taverne`/`hotel`/`grange` are Wizard's Tower,
-  Smithy, Shirriff-house, Mathom-house, The Green Dragon, Mayor's Hall, Farmstead. Keep new strings about as
+  as Barrow-wight; buildings `tour`/`atelier`/`caserne`/`temple`/`taverne`/`hotel`/`grange` are Elf-tower,
+  Dwarf-forge, Longhall (Rohan), Mathom-house (a hobbit smial), The Green Dragon, Elvish house, Farmstead.
+  Their models are `elftower`/`dwarfforge`/`longhall`/`smial`/`elfhouse` in `tools/village-art/buildings.py`
+  (palette ids 60-67 in `tex.py`); the originals stay in the file but the scene (`compose2.py`) no longer places
+  them. Moving or reshaping a building means re-baking (`build_assets.sh`, `bake_world.py`, `bake_lands.py`,
+  the last ~70 min) and updating `lieux.js` (hit boxes, `SMOKE`, `GLOWS`). Tall models must stay below the top
+  of the village strip (world y >= 0) or their tips are cut off. Keep new strings about as
   short as the originals: the hour plaque fits ~63 px of Alegreya Sans Bold 16 before it hits the clock.
 - **Realm pennants are baked PNGs** (`art/ui/banniere-<cloth index>-<charge>.png`), not the `blason-*.svg`
   files. `ui.js` maps a colour to its PNG by index in `CLOTH`, so `CLOTH` in `tools/ui.py`, `CLOTH` in `ui.js`

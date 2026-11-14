@@ -205,3 +205,12 @@ APPLE   = M(45, '#d8452e', t_noise, params={'amp': 0.5}, hs=20)
 PUMPKIN = M(46, '#e07a24', t_noise, params={'amp': 0.6}, hs=18)
 CABBAGE = M(47, '#7fb04a', t_leaf, hs=20)
 DOOR_G  = M(60, '#2f7a3e', t_plank, hs=24)  # the round green door of the hobbit smial (48-52 are taken in buildings.py)
+# this fork: Middle-earth buildings
+ELF_ROOF = M(61, '#8e9ab4', t_shingle, params={'round': True, 'c': (0, 0), 'r': 20}, hs=22, light=1.3)
+ELF_GLOW = M(62, '#cfe8ff', t_noise, params={'amp': 1.0, 'sc': 2}, emissive=3.2, night='#d8ecff', rim=False,
+             rp=np.array([hx(c) for c in ('#1c3a6b', '#2f5fa8', '#5f93d8', '#9cc6f2', '#d2e9ff', '#f2f9ff', '#ffffff')], np.float32))
+ROCK = M(63, '#76716b', t_noise, params={'amp': 1.6, 'sc': 1.4}, hs=22)   # rough grey crag
+THATCH = M(64, '#b98a3e', t_hay, hs=18)  # older, browner thatch for the hall
+THATCH_D = M(65, '#7f5f2c', t_hay, hs=16)  # the darker courses of the thatch
+ELF_STONE = M(66, '#e6dcc6', t_stone, params={'ch': 10, 'bl': 18}, light=1.1, hs=16)       # warm pale stone
+ELF_SLATE = M(67, '#6f8f84', t_shingle, params={'round': True}, hs=22, light=1.3)            # sage-green slate

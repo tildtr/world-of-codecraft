@@ -103,7 +103,7 @@ const S = {
     scroll: "Scroll",
     splitR: "Split right", splitD: "Split down", zoom: "Zoom", close: "Close",
     // places
-    building: { grange: "Farmstead and fields", tour: "Wizard's Tower", atelier: "Smithy", hotel: "Mayor's Hall", taverne: "The Green Dragon", temple: "Mathom-house", caserne: "Shirriff-house" },
+    building: { grange: "Farmstead and fields", tour: "Elf-tower", atelier: "Dwarf-forge", hotel: "Elvish house", taverne: "The Green Dragon", temple: "Mathom-house", caserne: "Longhall" },
     market: "Market",
     campfire: "Campfire",
     gate: "Bywater Road",
@@ -186,7 +186,7 @@ const S = {
     animOffTip: "Images fixes.\nClic : animer le village (scènes, ennemis)",
     scroll: "Parchemin",
     splitR: "Fendre à droite", splitD: "Fendre en bas", zoom: "Agrandir", close: "Fermer",
-    building: { grange: "Ferme et champs", tour: "Tour du magicien", atelier: "Forge", hotel: "Hôtel du Maire", taverne: "Le Dragon Vert", temple: "Maison des Mathoms", caserne: "Poste des Shiriffs" },
+    building: { grange: "Ferme et champs", tour: "Tour elfe", atelier: "Forge naine", hotel: "Maison elfe", taverne: "Le Dragon Vert", temple: "Maison des Mathoms", caserne: "Grand-halle" },
     market: "Marché",
     campfire: "Feu de camp",
     gate: "Route de Lèzeau",

@@ -4,13 +4,13 @@ export const TILES = [{"k": 0, "x": 0, "w": 1000}, {"k": 1, "x": 1000, "w": 1000
 // front cut-outs: drawn above any unit whose depth (feet y + 3) is below z and that overlaps it
 export const FRONTS = [
   {"key": "barn", "x": 36, "y": 73, "w": 318, "h": 247, "z": 260},
-  {"key": "magetower", "x": 462, "y": 13, "w": 405, "h": 383, "z": 378},
-  {"key": "forge", "x": 720, "y": 68, "w": 295, "h": 224, "z": 245},
-  {"key": "townhall", "x": 1080, "y": 19, "w": 449, "h": 371, "z": 350},
+  {"key": "elftower", "x": 472, "y": 21, "w": 389, "h": 372, "z": 378},
+  {"key": "dwarfforge", "x": 695, "y": 62, "w": 344, "h": 246, "z": 245},
+  {"key": "elfhouse", "x": 1086, "y": 28, "w": 430, "h": 362, "z": 350},
   {"key": "tavern", "x": 1471, "y": 39, "w": 348, "h": 280, "z": 275},
   {"key": "smial", "x": 1857, "y": 158, "w": 344, "h": 219, "z": 337},
   {"key": "tree-oak", "x": 2045, "y": 86, "w": 205, "h": 149, "z": 213},
-  {"key": "barracks", "x": 2284, "y": 45, "w": 463, "h": 305, "z": 292},
+  {"key": "longhall", "x": 2288, "y": 43, "w": 406, "h": 295, "z": 292},
   {"key": "well", "x": 1404, "y": 304, "w": 157, "h": 96, "z": 400},
   {"key": "noticeboard", "x": 1008, "y": 299, "w": 138, "h": 101, "z": 386},
   {"key": "campfire", "x": 1554, "y": 323, "w": 101, "h": 58, "z": 356},
